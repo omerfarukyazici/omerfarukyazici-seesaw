@@ -1,66 +1,90 @@
+console.log("JavaScript dosyası yüklendi!");
+
 const seesawPlank = document.querySelector("#seesaw-plank");
-
-// Reset butonunun 'id'si ile seçiyoruz
 const resetButton = document.querySelector("#reset-button");
-
-// Bilgi panelindeki yazıları da js elemanlarına bağlıyoruz
-const leftWeightDisplay = document.querySelector(" #left-weight-display");
+const leftWeightDisplay = document.querySelector("#left-weight-display");
 const rightWeightDisplay = document.querySelector("#right-weight-display");
-const nextWeightDisplay = document.querySelector(" #next-weight-display");
+const nextWeightDisplay = document.querySelector("#next-weight-display");
 const tiltAngleDisplay = document.querySelector("#tilt-angle-display");
 const logList = document.querySelector("#log-list");
 
 
+let placedObjects = [];
+const plankWidth = 400;
+const plankCenter = plankWidth / 2;
 
-//Metotlar
-//1 ile 10 kg arasındaki kiloyu rastgele oluşturan metot
+
+
 function getRandomWeight() {
     return Math.floor(Math.random() * 10) + 1;
 }
 
-//Event listenerlar eklenecek
+function createWeightElement(weight, positionFromLeft) {
+    const newWeight = document.createElement("div");
+    newWeight.className = "weight-object";
+    newWeight.style.left = `${positionFromLeft}px`;
+    newWeight.textContent = `${weight}kg`;
+    newWeight.setAttribute("data-weight", weight);
+    seesawPlank.appendChild(newWeight);
+}
 
-//tahterevalli çubuğuna dokunulduğunda çalışacak
+
+
+function updateSimulation() {
+    console.log("Simülasyon güncelleniyor (hesaplama yapılıyor)...");
+
+    let leftTorque = 0;
+    let rightTorque = 0;
+
+    // Hafızadaki tüm nesneler üzerinde döngü başlat
+    placedObjects.forEach(obj => {
+        if (obj.distance < 0) {
+            // Bu nesne Sol Tarafta
+            // Tork = ağırlık * mesafe (mesafenin mutlak değerini alıyoruz)
+            leftTorque += obj.weight * Math.abs(obj.distance);
+        } else {
+            // Bu nesne Sağ Tarafta
+            rightTorque += obj.weight * obj.distance;
+        }
+    });
+
+
+    const torqueDifference = rightTorque - leftTorque;
+
+
+    const angle = Math.max(-30, Math.min(30, torqueDifference / 10));
+
+    console.log(`Tork Farkı: ${torqueDifference}, Hesaplanan Açı: ${angle.toFixed(1)}°`);
+
+
+}
+
+
+
 seesawPlank.addEventListener('click', function (event) {
-    // 'event' SADECE BU SÜSLÜ PARANTEZLER İÇİNDE GEÇERLİDİR
+    console.log("Tahterevalliye tıklandı!");
 
-    console.log("Clicked seesaw!");
-
-    // --- DOĞRU YER BURASI ---
-    // Bu kod artık sadece tıklandığında çalışacak.
+    // 1. Ağırlığı ve Pozisyonları Hesapla
     const newWeightValue = getRandomWeight();
-    const clickPosition = event.offsetX; // Hata vermez, çünkü 'event' artık tanımlı
+    const clickPosition = event.offsetX;
+    const distanceFromCenter = clickPosition - plankCenter;
+
+    // Nesneyi Yarattık
     createWeightElement(newWeightValue, clickPosition);
 
-    // Konsol log'unu da içeri alalım
-    console.log(`Yeni ağırlık eklendi: ${newWeightValue}kg, Pozisyon: ${clickPosition}px`);
-    console.log(event);
-}); // <-- FONKSİYONUN BİTİŞİ
+    // Hafızaya  Ekle
+    const newObject = {
+        weight: newWeightValue,
+        distance: distanceFromCenter
+    };
+    placedObjects.push(newObject);
 
-// Reset düğmesine click olayı eklendi
+    console.log("Hafızadaki nesneler:", placedObjects);
+
+    // Her yeni nesne eklendiğinde, tüm fiziği yeniden hesapla
+    updateSimulation();
+});
+
 resetButton.addEventListener('click', function () {
     console.log("Clicked reset button!");
 });
-
-console.log(`Yeni ağırlık eklendi: ${newWeightValue}kg, Pozisyon: ${clickPosition}px`);
-
-function createWeightElement(weight, positionFromLeft) {
-    //  Yeni bir <div> elemanı oluştur 
-    const newWeight = document.createElement("div");
-
-    //  CSS sınıfını atanır
-    newWeight.className = "weight-object";
-
-    // Pozisyonunu ayarlanır
-    // Tıklanan yerin pozisyonunu 'left' stili olarak veririz
-    newWeight.style.left = `${positionFromLeft}px`;
-
-    // 4. İçine ağırlık değerini yaz 
-    newWeight.textContent = `${weight}kg`;
-
-    // 5. CSS'te renkleri ayarlamak için data-attribute 
-    newWeight.setAttribute("data-weight", weight);
-
-    // 6. Yaratılan bu div'i tahterevalli çubuğunun içine 
-    seesawPlank.appendChild(newWeight);
-}
