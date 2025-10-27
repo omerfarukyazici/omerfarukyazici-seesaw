@@ -28,43 +28,38 @@ function createWeightElement(weight, positionFromLeft) {
     seesawPlank.appendChild(newWeight);
 }
 
-
-
 function updateSimulation() {
-    console.log("Simülasyon güncelleniyor (hesaplama yapılıyor)...");
+    console.log("Simülasyon güncelleniyor...");
 
     let leftTorque = 0;
     let rightTorque = 0;
+    let totalLeftWeight = 0;
+    let totalRightWeight = 0;
 
-    // Hafızadaki tüm nesneler üzerinde döngü başlat
     placedObjects.forEach(obj => {
         if (obj.distance < 0) {
-            // Bu nesne Sol Tarafta
-            // Tork = ağırlık * mesafe (mesafenin mutlak değerini alıyoruz)
             leftTorque += obj.weight * Math.abs(obj.distance);
+            totalLeftWeight += obj.weight;
         } else {
-            // Bu nesne Sağ Tarafta
             rightTorque += obj.weight * obj.distance;
+            totalRightWeight += obj.weight;
         }
     });
 
-
     const torqueDifference = rightTorque - leftTorque;
-
-
     const angle = Math.max(-30, Math.min(30, torqueDifference / 10));
 
-    console.log(`Tork Farkı: ${torqueDifference}, Hesaplanan Açı: ${angle.toFixed(1)}°`);
 
+    seesawPlank.style.transform = `rotate(${angle}deg)`;
 
+    leftWeightDisplay.textContent = `${totalLeftWeight.toFixed(1)} kg`;
+    rightWeightDisplay.textContent = `${totalRightWeight.toFixed(1)} kg`;
+    tiltAngleDisplay.textContent = `${angle.toFixed(1)}°`;
 }
-
-
 
 seesawPlank.addEventListener('click', function (event) {
     console.log("Tahterevalliye tıklandı!");
 
-    // 1. Ağırlığı ve Pozisyonları Hesapla
     const newWeightValue = getRandomWeight();
     const clickPosition = event.offsetX;
     const distanceFromCenter = clickPosition - plankCenter;
