@@ -1,0 +1,162 @@
+/* Genel Sayfa Stilleri */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f4f8;
+    color: #333;
+    margin-top: 20px;
+}
+
+h1 {
+    font-weight: 300;
+}
+
+/* Üst bilgi paneli */
+.info-panel {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+}
+
+.info-panel div {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.info-panel span {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Simülasyon alanı */
+.simulation-area {
+    width: 500px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ccc;
+    background-color: #ffffff;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Tahterevalli Çubuğu */
+#seesaw-plank {
+    width: 400px;
+    /* Çubuk uzunluğu */
+    height: 20px;
+    background-color: #8B4513;
+    /* Çubuk rengi */
+    border-radius: 5px;
+    position: relative;
+    /* ağırlıkları konumlandırdığımız kısım */
+    z-index: 10;
+
+    /* dönüşü yumuşatılır */
+    transition: transform 0.5s ease;
+
+    /* tıklanabilir */
+    cursor: pointer;
+}
+
+/* Destek  */
+#pivot {
+    width: 30px;
+    height: 30px;
+    background-color: #555;
+
+    /* desteğin şekli) */
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+
+    /* çubuk ortasına konumlandırma */
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+
+/* Düğme ve Log Stilleri */
+#reset-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#log-list {
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 10px;
+    width: 400px;
+    height: 100px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+/* YARATILACAK AĞIRLIK NESNELERİNİN STİLİ
+  Javascript ile oluşturduğumuz divlerde bunları kullanacağız.
+*/
+.weight-object {
+    width: 30px;
+    height: 30px;
+    background-color: #f44336;
+    /* Renk   */
+    border-radius: 50%;
+    /* Daire */
+    position: absolute;
+    /* Çubuğun içinde pozisyon almalı */
+
+    /* Ağırlığı yatayda tam ortalamak için */
+    transform: translateX(-50%);
+
+    /* Ağırlığın çubuğun üstünde durmasını sağlamak için */
+    bottom: 20px;
+    /* çubuğun yüksekliği */
+
+    /* Ağırlık değerini göstermek için */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* farklı ağırlıklarda kullanılacak farklı renkler */
+.weight-object[data-weight="1"],
+.weight-object[data-weight="2"] {
+    background-color: #4CAF50;
+}
+
+.weight-object[data-weight="3"],
+.weight-object[data-weight="4"] {
+    background-color: #2196F3;
+}
+
+.weight-object[data-weight="5"],
+.weight-object[data-weight="6"] {
+    background-color: #FFC107;
+}
+
+.weight-object[data-weight="7"],
+.weight-object[data-weight="8"] {
+    background-color: #FF5722;
+}
+
+.weight-object[data-weight="9"],
+.weight-object[data-weight="10"] {
+    background-color: #9C27B0;
+}
