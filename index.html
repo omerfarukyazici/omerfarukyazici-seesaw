@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Seesaw Simulation</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Seesaw Simulation </h1>
+
+    <div class="info-panel">
+
+        <div>
+            LEFT WEIGHT
+            <span id="left-weight-display"> 0.0 kg</span>
+        </div>
+
+        <div>
+            NEXT WEIGHT
+            <span id="next-weight-display"> ? kg</span>
+        </div>
+
+        <div>
+            RIGHT WEIGHT
+            <span id="right-weight-display"> 0.0 kg</span>
+        </div>
+
+        <div>
+            TILT ANGLE
+            <span id="tilt-angle-display"> 0.0°</span>
+        </div>
+    </div>
+
+    <div class="simulation-area">
+
+        <div id="seesaw-plank">
+
+            <div id="pivot"></div>
+
+        </div>
+    </div>
+
+    <button id="reset-button">Reset Seesaw</button>
+
+    <ul id="log-list">
+    </ul>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
